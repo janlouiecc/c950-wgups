@@ -12,5 +12,6 @@ class Package:
         self.notes = notes
 
     def __str__(self):
-        return "%s, %s, %s, %s, %s, %s, %s kg, %s" % (self.package_id, self.address, self.city, self.state,
-                                                      self.zip_code, self.deadline, self.mass_in_kg, self.notes)
+        return "Package ID: %s\nAddress: %s, %s, %s %s\nDelivery Deadline: %s\nWeight in Kilos: %s kg\nSpecial " \
+               "Notes: %s" % (self.package_id, self.address, self.city, self.state, self.zip_code, self.deadline,
+                              self.mass_in_kg, self.notes)

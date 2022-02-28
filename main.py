@@ -27,3 +27,6 @@ def load_package_data(file_name):
 
 packages_table = ChainingHashTable()
 load_package_data('packages.csv')
+
+# for i in range(40):
+#     print(packages_table.search(i + 1), "\n")
