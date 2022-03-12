@@ -25,17 +25,47 @@ def load_package_data(file_name, table):
             table.insert(package_id, pkg)
 
 
-# This function loads the addresses into a distance data list
+# This function loads the addresses and their distances into a distance data list
 def load_distance_data(file_name, table):
     with open(file_name) as distance_data:
         distance_data = csv.reader(distance_data, delimiter=',')
         for data in distance_data:
             table.append(data)
 
+    # This loops through the distance without a number and finds the corresponding number in the list
     for i in range(len(table)):
-        for j in range(len(table) + 2):
+        for j in range(len(table) + 3):
             if table[i][j] == '':
-                table[i][j] = table[j-2][i+2]
+                table[i][j] = table[j - 3][i + 3]
+
+
+# This function loads the addresses into an address data list , delimiter=','
+def load_address_data(file_name, table):
+    with open(file_name) as address_data:
+        address_data = csv.reader(address_data, delimiter=',')
+        for data in address_data:
+            table.append(data)
+
+
+# This function finds the distances between two addresses
+def distance_between(address1, address2):
+    i = 0
+    # Finds the index for the target location of Address 2 from Address 1
+    for _ in address_data_list:
+        if address2 == address_data_list[i][1]:
+            break
+        else:
+            i += 1
+            continue
+
+    # Finds the distance between Address 1 and Address 2 after the index has been found for Address 2
+    j = 0
+    for _ in address_data_list:
+        if address1 == address_data_list[j][1]:
+            return distance_data_list[j][i + 3]
+        else:
+            j += 1
+            continue
 
 
 # Creates a hash table for the packages
@@ -49,3 +79,12 @@ distance_data_list = []
 
 # Loads the distance data into a list
 load_distance_data('distances.csv', distance_data_list)
+
+# Creates a list to store distances between addresses
+address_data_list = []
+
+# Loads the distance data into a list
+load_address_data('addresses.csv', address_data_list)
+
+print("The distance between", address_data_list[9][0], "and", address_data_list[22][0], "is", distance_between(
+    address_data_list[9][1], address_data_list[22][1],), "kilometers.")
