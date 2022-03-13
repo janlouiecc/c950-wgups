@@ -40,8 +40,6 @@ class Package:
                "Notes: %s" % (self.package_id, self.address, self.city, self.state, self.zip_code, self.deadline,
                               self.mass_in_kg, self.notes)
 
-    # This function loads a hash table with the package data
-
     def lookup(self, descript):
         match descript:
             case "package_id":

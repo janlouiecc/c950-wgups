@@ -1,6 +1,5 @@
 from hash import ChainingHashTable
 from package import *
-# from truck import *
 import csv
 
 
@@ -57,10 +56,26 @@ def distance_between(address1, address2):
 packages_table = ChainingHashTable()
 
 # Loads the packages into the packages table
-load_package_data('packages.csv', ChainingHashTable())
+load_package_data('packages.csv', packages_table)
 
 # Creates a list to store distances between addresses then calls the function to load the distance data into the list
 distance_data_list = load_distance_data('distances.csv')
 
 # Creates a list to store the addresses in the list then calls the function to load the addresses
 address_data_list = load_address_data('addresses.csv')
+
+for _ in packages_table.table[0]:
+    print(_[1].lookup("address"))
+
+# def load_truck_packages():
+#     for _ in range(len(packages_table.table[0])):
+#         truck_a.append(packages_table.table[0][_])
+#
+#     print(truck_a[0][1].lookup("address"))
+#     print(truck_a)
+
+# truck1 = []
+# truck2 = []
+# truck3 = []
+#
+# load_truck_packages(truck1, truck2, truck3)

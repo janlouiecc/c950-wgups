@@ -1,10 +1,4 @@
 
-
-class Truck:
-
-    def __init__(self, packages):
-        self.packages = packages
-
 # def load_truck_packages():
 #     for _ in range(len(packages_table.table[0])):
 #         truck_a.append(packages_table.table[0][_])
