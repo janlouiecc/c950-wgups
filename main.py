@@ -32,7 +32,7 @@ def load_distance_data(file_name, table):
         for data in distance_data:
             table.append(data)
 
-    # This loops through the distance without a number and finds the corresponding number in the list
+    # This loops through the distance data that is empty and finds the corresponding number in the list
     for i in range(len(table)):
         for j in range(len(table) + 3):
             if table[i][j] == '':
@@ -68,6 +68,21 @@ def distance_between(address1, address2):
             continue
 
 
+def minimum_distance_from(from_address):  # truck_packages
+    i = 0
+    j = 3
+    for _ in distance_data_list:
+        if distance_data_list[i][1] == from_address:
+            min_dist = distance_data_list[i][j]
+            for _ in range(len(distance_data_list[i])):
+
+                if min_dist <= distance_data_list[i][j]:  # figure this out, how to keep  it in range
+                    continue
+                else:
+                    min_dist = distance_data_list[i][j]
+        i += 1
+
+
 # Creates a hash table for the packages
 packages_table = ChainingHashTable()
 
@@ -86,5 +101,8 @@ address_data_list = []
 # Loads the distance data into a list
 load_address_data('addresses.csv', address_data_list)
 
-print("The distance between", address_data_list[9][0], "and", address_data_list[22][0], "is", distance_between(
-    address_data_list[9][1], address_data_list[22][1],), "kilometers.")
+truck1 = []
+truck2 = []
+truck3 = []
+
+minimum_distance_from("195 W Oakland Ave")
