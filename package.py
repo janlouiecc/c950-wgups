@@ -15,3 +15,24 @@ class Package:
         return "Package ID: %s\nAddress: %s, %s, %s %s\nDelivery Deadline: %s\nWeight in Kilos: %s kg\nSpecial " \
                "Notes: %s" % (self.package_id, self.address, self.city, self.state, self.zip_code, self.deadline,
                               self.mass_in_kg, self.notes)
+
+    def lookup(self, descript):
+        match descript:
+            case "package_id":
+                return self.package_id
+            case "address":
+                return self.address
+            case "city":
+                return self.city
+            case "state":
+                return self.state
+            case "zip_code":
+                return self.zip_code
+            case "deadline":
+                return self.deadline
+            case "mass":
+                return self.mass_in_kg
+            case "notes":
+                return self.notes
+            case _:
+                return "ERROR: data not found"
