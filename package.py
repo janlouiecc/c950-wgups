@@ -23,6 +23,73 @@ def load_package_data(file_name, table):
             table.insert(package_id, pkg)
 
 
+# This function loads the addresses and their distances into a distance data list
+def load_distance_data(file_name):
+    table = []
+    with open(file_name) as distance_data:
+        distance_data = csv.reader(distance_data, delimiter=',')
+        for data in distance_data:
+            table.append(data)
+
+    # This loops through the distance data that is empty and finds the corresponding number in the list
+    for i in range(len(table)):
+        for j in range(len(table) + 3):
+            if table[i][j] == '':
+                table[i][j] = table[j - 3][i + 3]
+
+    return table
+
+
+# This function loads the addresses into an address data list , delimiter=','
+def load_address_data(file_name):
+    table = []
+    with open(file_name) as address_data:
+        address_data = csv.reader(address_data, delimiter=',')
+        for data in address_data:
+            table.append(data)
+
+    return table
+
+
+# This function finds the distances between two addresses
+def distance_between(address1, address2,
+                     address_list, distance_list):
+    i = 0
+    # Finds the index for the target location of Address 2 from Address 1
+    for _ in address_list:
+        if address2 == address_list[i][1]:
+            break
+        else:
+            i += 1
+            continue
+
+    # Finds the distance between Address 1 and Address 2 after the index has been found for Address 2
+    j = 0
+    for _ in address_list:
+        if address1 == address_list[j][1]:
+            return distance_list[j][i + 3]
+        else:
+            j += 1
+            continue
+
+
+# Work on the load truck packages algorithm
+def load_truck_packages(truck1, truck2, truck3, packages):
+    for i in range(1):
+        for _ in range(len(packages.table[i])):
+            # if this, then load into truck 1
+            # if this, then load into truck 2
+            # if this, then load into truck 3
+            truck1.append(packages.search(10))
+
+    for _ in range(len(packages.table[1])):
+        truck2.append(packages.table[1][_])
+
+    truck3.append(packages.search(33))  # USE THIS METHOD BRO
+    truck3.append(packages.search(39))
+    truck3.append(packages.search(28))
+
+
 class Package:
 
     def __init__(self, package_id, address, city, state, zip_code, deadline, mass_in_kg, notes):
