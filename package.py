@@ -73,21 +73,28 @@ def distance_between(address1, address2,
             continue
 
 
-# Work on the load truck packages algorithm
+# This function will load the trucks with packages along with their associated constraints
 def load_truck_packages(truck1, truck2, truck3, packages):
-    for i in range(1):
-        for _ in range(len(packages.table[i])):
-            # if this, then load into truck 1
-            # if this, then load into truck 2
-            # if this, then load into truck 3
-            truck1.append(packages.search(10))
-
-    for _ in range(len(packages.table[1])):
-        truck2.append(packages.table[1][_])
-
-    truck3.append(packages.search(33))  # USE THIS METHOD BRO
-    truck3.append(packages.search(39))
-    truck3.append(packages.search(28))
+    for i in range(1, 41):
+        if packages.search(i).lookup("notes") == "Must be delivered with 15, 19" or \
+                packages.search(i).lookup("notes") == "Must be delivered with 13, 19" or \
+                packages.search(i).lookup("notes") == "Must be delivered with 13, 15" or \
+                packages.search(i).lookup("package_id") == 13 or packages.search(i).lookup("package_id") == 15 or \
+                packages.search(i).lookup("package_id") == 19:
+            truck1.append(packages.search(i))
+        elif packages.search(i).lookup("deadline") == "EOD" and packages.search(i).lookup("notes") is None:
+            if len(truck2) > 10:
+                truck3.append(packages.search(i))
+            else:
+                truck2.append(packages.search(i))
+        elif packages.search(i).lookup("deadline") != "EOD" and packages.search(i).lookup("notes") is None:
+            truck1.append(packages.search(i))
+        elif packages.search(i).lookup("notes") == "Can only be on truck 2":
+            truck2.append(packages.search(i))
+        elif packages.search(i).lookup("mass") > 80.0 and packages.search(i).lookup("notes") is None:
+            truck3.append(packages.search(i))
+        else:
+            truck3.append(packages.search(i))
 
 
 class Package:

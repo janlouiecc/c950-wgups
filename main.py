@@ -24,17 +24,9 @@ class Main:
 
     load_truck_packages(truck1, truck2, truck3, packages_table)
 
-    print(truck1)
-    print(truck2)
-    print(truck3)
-    # print(truck1[0][1].lookup("address"))
-    # print(truck2[0][1].lookup("address"))
-    print(truck3[1].lookup("address"))
-    print()
+    print(len(truck1))
+    print(len(truck2))
+    print(len(truck3), "\n")
 
-    # for _ in range(len(packages_table.table[0])):  # load up the truck manually using this small algo
-    #     truck1.append(packages_table.table[0][_])
-    #
-    #     print(truck1[_][1].lookup("address"))
-    # testt = packages_table.search(5)
-    # print(testt.lookup("address"))
+    for _ in truck3:
+        print(_, "\n")
