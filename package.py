@@ -40,63 +40,6 @@ def load_distance_data(file_name):
     return table
 
 
-# This function loads the addresses into an address data list , delimiter=','
-def load_address_data(file_name):
-    table = []
-    with open(file_name) as address_data:
-        address_data = csv.reader(address_data, delimiter=',')
-        for data in address_data:
-            table.append(data)
-
-    return table
-
-
-# This function finds the distances between two addresses
-def distance_between(address1, address2,
-                     address_list, distance_list):
-    i = 0
-    # Finds the index for the target location of Address 2 from Address 1
-    for _ in address_list:
-        if address2 == address_list[i][1]:
-            break
-        else:
-            i += 1
-            continue
-
-    # Finds the distance between Address 1 and Address 2 after the index has been found for Address 2
-    j = 0
-    for _ in address_list:
-        if address1 == address_list[j][1]:
-            return distance_list[j][i + 3]
-        else:
-            j += 1
-            continue
-
-
-# This function will load the trucks with packages along with their associated constraints
-def load_truck_packages(truck1, truck2, truck3, packages):
-    for i in range(1, 41):
-        if packages.search(i).lookup("notes") == "Must be delivered with 15, 19" or \
-                packages.search(i).lookup("notes") == "Must be delivered with 13, 19" or \
-                packages.search(i).lookup("notes") == "Must be delivered with 13, 15" or \
-                packages.search(i).lookup("package_id") == 13 or packages.search(i).lookup("package_id") == 15 or \
-                packages.search(i).lookup("package_id") == 19:
-            truck1.append(packages.search(i))
-        elif packages.search(i).lookup("deadline") == "EOD" and packages.search(i).lookup("notes") is None:
-            if len(truck2) > 10:
-                truck3.append(packages.search(i))
-            else:
-                truck2.append(packages.search(i))
-        elif packages.search(i).lookup("deadline") != "EOD" and packages.search(i).lookup("notes") is None:
-            truck1.append(packages.search(i))
-        elif packages.search(i).lookup("notes") == "Can only be on truck 2":
-            truck2.append(packages.search(i))
-        elif packages.search(i).lookup("mass") > 80.0 and packages.search(i).lookup("notes") is None:
-            truck3.append(packages.search(i))
-        else:
-            truck3.append(packages.search(i))
-
-
 class Package:
 
     def __init__(self, package_id, address, city, state, zip_code, deadline, mass_in_kg, notes):
@@ -108,11 +51,13 @@ class Package:
         self.deadline = deadline
         self.mass_in_kg = mass_in_kg
         self.notes = notes
+        self.delivery_time = 0  # change this to reflect an actual time
 
     def __str__(self):
         return "Package ID: %s\nAddress: %s, %s, %s %s\nDelivery Deadline: %s\nWeight in Kilos: %s kg\nSpecial " \
-               "Notes: %s" % (self.package_id, self.address, self.city, self.state, self.zip_code, self.deadline,
-                              self.mass_in_kg, self.notes)
+               "Notes: %s\nDelivery Time: %s" % (self.package_id, self.address, self.city, self.state,
+                                                 self.zip_code, self.deadline, self.mass_in_kg, self.notes,
+                                                 self.delivery_time)
 
     def lookup(self, descript):
         match descript:
@@ -132,5 +77,7 @@ class Package:
                 return self.mass_in_kg
             case "notes":
                 return self.notes
+            case "delivery_time":
+                return self.delivery_time
             case _:
                 return "ERROR: data not found"
