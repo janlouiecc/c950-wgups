@@ -13,20 +13,19 @@ def load_truck_packages(truck1, truck2, truck3, delayed, packages):
                 truck3.append(packages.search(i))
             else:
                 truck2.append(packages.search(i))
-        elif packages.search(i).lookup("deadline") != "EOD":  # elif packages.search(i).lookup("deadline") != "EOD":  #
+        elif packages.search(i).lookup("deadline") != "EOD":
             if packages.search(i).lookup("notes") == "Delayed on flight---will not arrive to depot until 9:05 am":
                 delayed.append(packages.search(i))
             else:
                 truck1.append(packages.search(i))
         elif packages.search(i).lookup("notes") == "Can only be on truck 2":
             truck2.append(packages.search(i))
-        elif packages.search(i).lookup("mass") > 80.0 and packages.search(i).lookup("notes") is None:
-            truck3.append(packages.search(i))
         else:
             truck3.append(packages.search(i))
 
 
 class Truck:
+    total_mileage = 0
 
     def __init__(self, pkgs=None):
         if pkgs is None:
@@ -37,6 +36,6 @@ class Truck:
     def add_pkgs(self, pkg):
         self.pkgs.append(pkg)
 
-    def deliver_pkg(self, index):
-        self.pkgs[index].delivery_time = 1
+    def deliver_pkg(self, index, time):
+        self.pkgs[index].delivery_time = time
         self.pkgs.remove(self.pkgs[index])

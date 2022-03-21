@@ -40,6 +40,10 @@ def load_distance_data(file_name):
     return table
 
 
+def convert_float_to_time(time):
+    return '{0:02.0f}:{1:02.0f}'.format(*divmod(time * 60, 60))
+
+
 class Package:
 
     def __init__(self, package_id, address, city, state, zip_code, deadline, mass_in_kg, notes):
@@ -57,7 +61,7 @@ class Package:
         return "Package ID: %s\nAddress: %s, %s, %s %s\nDelivery Deadline: %s\nWeight in Kilos: %s kg\nSpecial " \
                "Notes: %s\nDelivery Time: %s" % (self.package_id, self.address, self.city, self.state,
                                                  self.zip_code, self.deadline, self.mass_in_kg, self.notes,
-                                                 self.delivery_time)
+                                                 convert_float_to_time(self.delivery_time))
 
     def lookup(self, descript):
         match descript:
@@ -78,6 +82,6 @@ class Package:
             case "notes":
                 return self.notes
             case "delivery_time":
-                return self.delivery_time
+                return convert_float_to_time(self.delivery_time)
             case _:
-                return "ERROR: data not found"
+                return "Error"
