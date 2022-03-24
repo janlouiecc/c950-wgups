@@ -1,3 +1,5 @@
+# Jan Louie Castro, Student ID# 003952787
+
 from hash import ChainingHashTable
 from package import *
 from truck import *
@@ -40,10 +42,12 @@ def deliver_the_packages(truck, current_time):
     while truck_load > 0:
         temp = []
         for _ in range(len(truck.pkgs)):
-            temp.append(distance_between(last_known_address, truck.pkgs[_].lookup("address")))
-        last_known_address = truck.pkgs[temp.index((min(temp)))].lookup("address")
+            temp.append(distance_between(last_known_address, truck.pkgs[_].address))
+        last_known_address = truck.pkgs[temp.index((min(temp)))].address
         total_miles += min(temp)
         current_time += (min(temp) / 0.3) / 60
+        print("Package #" + str(truck.pkgs[temp.index((min(temp)))].package_id) + " has been delivered to " +
+              truck.pkgs[temp.index((min(temp)))].address + " at " + convert_float_to_time(current_time))
         truck.deliver_pkg(temp.index((min(temp))), current_time)
         truck_load -= 1
 
@@ -54,8 +58,6 @@ def deliver_the_packages(truck, current_time):
 
 
 class Main:
-    print("Welcome to the WGUPS Package Tracking System!")
-
     # Creates three trucks to carry the packages
     # Saves packages that are delayed for a late delivery
     truck1 = Truck()
@@ -63,45 +65,105 @@ class Main:
     truck3 = Truck()
     delayed_with_deadline = []
 
-    # Calls the load_truck_packages function to load the packages
+    # Calls the load_truck_packages function to load the packages into the trucks
     load_truck_packages(truck1.pkgs, truck2.pkgs, truck3.pkgs, delayed_with_deadline, packages)
 
-    truck1_time = 8.0
-    truck2_time = 8.0
+    print("Welcome to the WGUPS Package Tracking System!")
 
-    truck1_mileage, truck1_time = deliver_the_packages(truck1, truck1_time)
-    Truck.total_mileage += truck1_mileage
-
-    truck2_mileage, truck2_time = deliver_the_packages(truck2, truck2_time)
-    Truck.total_mileage += truck2_mileage
-
+    # The main menu starts with the option to deliver all packages
     while True:
-        address_update = input("There is a new address for Package #" +
-                               str(packages.search(9).package_id) + ",would you like to update?\n"
-                                                                    "1. Yes\n"
-                                                                    "2. No\n"
-                                                                    "Click 1 or 2: ")
-        if address_update == str(1):
-            packages.search(9).address = "410 S State St"
-            print("\nPackage #" + str(packages.search(9).package_id), "'s address has updated",
-                  "to", str(packages.search(9).address))
+        print("\nMAIN MENU")
+        main_menu = input("1. Deliver Packages\n"
+                          "2. Exit Program\n"
+                          "SELECT - 1 or 2: ")
+        if main_menu == str(1):
+            truck1_time = 8.0
+            truck2_time = 8.0
+            truck3_time = 10.5
+
+            if len(truck1.pkgs) == 0 and len(truck2.pkgs) == 0 and len(truck3.pkgs) == 0:
+                print("There are currently no packages to deliver.")
+                continue
+
+            print("\nTruck 1 is now delivering...")
+            truck1_mileage, truck1_time = deliver_the_packages(truck1, truck1_time)
+            Truck.total_mileage += truck1_mileage
+
+            print("\nTruck 2 is now delivering...")
+            truck2_mileage, truck2_time = deliver_the_packages(truck2, truck2_time)
+            Truck.total_mileage += truck2_mileage
+
+            while True:
+                address_update = input("\nThe correct address has been found for Package #" +
+                                       str(packages.search(9).package_id) + ", would you like to update?"
+                                                                            "\nY - Yes\nN - No\nSELECT - Y or N: ")
+
+                if address_update.lower() == 'y':
+                    packages.search(9).address = "410 S State St"
+                    print("Package #" + str(packages.search(9).package_id), "'s address has been updated",
+                          "to", str(packages.search(9).address) + ".\n")
+                    break
+                elif address_update.lower() == 'n':
+                    print("Package #" + str(packages.search(9).package_id), "has not been updated.\n")
+                    break
+                else:
+                    print("Invalid Entry\n")
+
+            # Loads the delayed packages into Truck 1
+            print("Truck 1 is being being loaded for additional delivery...")
+            print("Truck 2 driver has now logged on to Truck 3 for delivery...")
+            for i in range(len(delayed_with_deadline)):
+                truck1.add_pkgs(delayed_with_deadline[i])
+
+            print("\nTruck 1 is now delivering...")
+            truck1_mileage, truck1_time = deliver_the_packages(truck1, truck1_time)
+
+            print("\nTruck 3 is now delivering...")
+            truck3_mileage, truck3_time = deliver_the_packages(truck3, truck3_time)
+            Truck.total_mileage += truck3_mileage
+
+            print("\nTOTAL TIME TO DELIVER ALL PACKAGES: " + str(int(truck3_time - 8.0)) + " hours and " +
+                  str(round(((truck3_time - 8.0) % 1) * 60)) + " minutes")
+            print("TOTAL MILEAGE FOR ALL TRUCKS: " + "{:.1f}".format(Truck.total_mileage), "miles")
             break
-        elif address_update == str(2):
-            print("\nPackage #" + str(packages.search(9).package_id), "has not been updated.")
-            break
+        elif main_menu == str(2):
+            exit()
         else:
-            print("Invalid Entry\n")
+            print("Invalid Entry")
+            continue
 
-    # Truck 2 driver delivers truck 3 after he gets back from delivering packages in truck 2
-    truck3_time = truck2_time
-
-    # Loads the delayed packages into Truck 1
-    for i in range(len(delayed_with_deadline)):
-        truck1.add_pkgs(delayed_with_deadline[i])
-
-    truck1_mileage, truck1_time = deliver_the_packages(truck1, truck1_time)
-
-    truck3_mileage, truck3_time = deliver_the_packages(truck3, truck3_time)
-    Truck.total_mileage += truck3_mileage
-
-    print("{:.1f}".format(Truck.total_mileage), "miles")
+    # After the packages have been delivered, a query option is available to utilize
+    while True:
+        print("\nWhat would you like to do next?")
+        main_menu = input("1. Package Information Lookup\n"
+                          "2. Exit Program\n"
+                          "SELECT - 1 or 2: ")
+        if main_menu == str(1):
+            while True:
+                package_lookup = input("\nPACKAGE STATUS AS OF _:__\nSELECT TIME (0:00 to 23:59): ")
+                if ':' not in package_lookup:
+                    print("Invalid Entry")
+                    continue
+                else:
+                    for i in range(40):
+                        if packages.search(i + 1).delivery_time <= convert_time_to_float(package_lookup):
+                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "DELIVERED" + ", " +
+                                  str(packages.search(i + 1).address) + ", " +
+                                  str(packages.search(i + 1).city) + ", " +
+                                  str(packages.search(i + 1).state) + ", " +
+                                  str(packages.search(i + 1).zip_code) + ", " +
+                                  str(packages.search(i + 1).mass_in_kg) + " kilograms")
+                        else:
+                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "NOT DELIVERED" + ", " +
+                                  str(packages.search(i + 1).address) + ", " +
+                                  str(packages.search(i + 1).city) + ", " +
+                                  str(packages.search(i + 1).state) + ", " +
+                                  str(packages.search(i + 1).zip_code) + ", " +
+                                  str(packages.search(i + 1).mass_in_kg) + " kilograms")
+                    break
+            continue
+        elif main_menu == str(2):
+            exit()
+        else:
+            print("Invalid Entry")
+            continue

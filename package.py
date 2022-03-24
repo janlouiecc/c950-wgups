@@ -44,6 +44,11 @@ def convert_float_to_time(time):
     return '{0:02.0f}:{1:02.0f}'.format(*divmod(time * 60, 60))
 
 
+def convert_time_to_float(time):
+    float_time = time.split(':')
+    return float(float_time[0]) + (float(float_time[1]) / 60)
+
+
 class Package:
 
     def __init__(self, package_id, address, city, state, zip_code, deadline, mass_in_kg, notes):
@@ -55,33 +60,9 @@ class Package:
         self.deadline = deadline
         self.mass_in_kg = mass_in_kg
         self.notes = notes
-        self.delivery_time = 0  # change this to reflect an actual time
+        self.delivery_time = 0.0
 
     def __str__(self):
-        return "Package ID: %s\nAddress: %s, %s, %s %s\nDelivery Deadline: %s\nWeight in Kilos: %s kg\nSpecial " \
-               "Notes: %s\nDelivery Time: %s" % (self.package_id, self.address, self.city, self.state,
-                                                 self.zip_code, self.deadline, self.mass_in_kg, self.notes,
-                                                 convert_float_to_time(self.delivery_time))
-
-    def lookup(self, descript):
-        match descript:
-            case "package_id":
-                return self.package_id
-            case "address":
-                return self.address
-            case "city":
-                return self.city
-            case "state":
-                return self.state
-            case "zip_code":
-                return self.zip_code
-            case "deadline":
-                return self.deadline
-            case "mass":
-                return self.mass_in_kg
-            case "notes":
-                return self.notes
-            case "delivery_time":
-                return convert_float_to_time(self.delivery_time)
-            case _:
-                return "Error"
+        return "Package #%s, %s, %s, %s, %s, %s, %skg, %s, %s" % (self.package_id, self.address, self.city, self.state,
+                                                                  self.zip_code, self.deadline, self.mass_in_kg,
+                                                                  self.notes, self.delivery_time)
