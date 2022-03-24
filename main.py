@@ -135,12 +135,13 @@ class Main:
     # After the packages have been delivered, a query option is available to utilize
     while True:
         print("\nWhat would you like to do next?")
-        main_menu = input("1. Package Information Lookup\n"
-                          "2. Exit Program\n"
-                          "SELECT - 1 or 2: ")
+        main_menu = input("1. Package Information Lookup (by delivery status at a point; inclusive)\n"
+                          "2. Package Information Lookup (by delivery status between points; exclusive)\n"
+                          "3. Exit Program\n"
+                          "SELECT - 1, 2 or 3: ")
         if main_menu == str(1):
             while True:
-                package_lookup = input("\nPACKAGE STATUS AS OF _:__\nSELECT TIME (0:00 to 23:59): ")
+                package_lookup = input("\nPACKAGE STATUS AS OF __:__\nSELECT TIME (i.e. 08:00 to 17:00): ")
                 if ':' not in package_lookup:
                     print("Invalid Entry")
                     continue
@@ -163,6 +164,33 @@ class Main:
                     break
             continue
         elif main_menu == str(2):
+            while True:
+                print("\nPACKAGE STATUS BETWEEN __:__ and __:__")
+                package_lookup1 = input("SELECT TIME A (i.e. 08:00 to 17:00): ")
+                package_lookup2 = input("SELECT TIME B (i.e. 08:00 to 17:00): ")
+                if ':' not in package_lookup1 and ':' not in package_lookup2:
+                    print("Invalid Entry")
+                    continue
+                else:
+                    temp = []
+                    for i in range(40):
+                        if convert_time_to_float(package_lookup1) <= packages.search(i + 1).delivery_time <= \
+                                convert_time_to_float(package_lookup2):
+                            temp.append(packages.search(i + 1))
+                        else:
+                            continue
+                    temp.sort(key=lambda s: s.delivery_time)
+                    for _ in range(len(temp)):
+                        print("Package #" + str(temp[_].package_id) + ", " +
+                              "Delivered on " + convert_float_to_time(temp[_].delivery_time) + ", " +
+                              str(temp[_].address) + ", " +
+                              str(temp[_].city) + ", " +
+                              str(temp[_].state) + ", " +
+                              str(temp[_].zip_code) + ", " +
+                              str(temp[_].mass_in_kg) + " kilograms")
+                    break
+            continue
+        elif main_menu == str(3):
             exit()
         else:
             print("Invalid Entry")
