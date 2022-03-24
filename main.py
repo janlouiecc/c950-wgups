@@ -148,14 +148,15 @@ class Main:
                 else:
                     for i in range(40):
                         if packages.search(i + 1).delivery_time <= convert_time_to_float(package_lookup):
-                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "DELIVERED" + ", " +
+                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "Delivered on " +
+                                  convert_float_to_time(packages.search(i + 1).delivery_time) + ", " +
                                   str(packages.search(i + 1).address) + ", " +
                                   str(packages.search(i + 1).city) + ", " +
                                   str(packages.search(i + 1).state) + ", " +
                                   str(packages.search(i + 1).zip_code) + ", " +
                                   str(packages.search(i + 1).mass_in_kg) + " kilograms")
                         else:
-                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "NOT DELIVERED" + ", " +
+                            print("Package #" + str(packages.search(i + 1).package_id) + ", " + "Not Delivered" + ", " +
                                   str(packages.search(i + 1).address) + ", " +
                                   str(packages.search(i + 1).city) + ", " +
                                   str(packages.search(i + 1).state) + ", " +
@@ -168,7 +169,7 @@ class Main:
                 print("\nPACKAGE STATUS BETWEEN __:__ and __:__")
                 package_lookup1 = input("SELECT TIME A (i.e. 08:00 to 17:00): ")
                 package_lookup2 = input("SELECT TIME B (i.e. 08:00 to 17:00): ")
-                if ':' not in package_lookup1 and ':' not in package_lookup2:
+                if ':' not in package_lookup1 or ':' not in package_lookup2:
                     print("Invalid Entry")
                     continue
                 else:
