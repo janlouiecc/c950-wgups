@@ -1,3 +1,4 @@
-# cs950-dsa2-project
+# CS950 - Delivery Routing System
 
-Ongoing project for my data structures and algorithms 2 class
+A routing system made with PyCharm. Implemented an algorithm to route delivery trucks to
+deliver packages in the most efficient way possible while minimizing travel time.
